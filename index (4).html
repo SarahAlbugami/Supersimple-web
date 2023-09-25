@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Saudi National Day Messages</title>
+    <style>
+        /* Style for the container */
+        .container {
+            background-color: #20b3b2;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column; /* Added to stack image and content vertically */
+            align-items: center; /* Center content horizontally */
+        }
+
+        /* Style for the header */
+        h1 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Style for the image */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Style for the message input and display */
+        #message-input, #message-display {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            padding: 0;
+            resize: none;
+        }
+
+        /* Style for the submit button */
+        #submit-button {
+            background-color: #ff5722;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #submit-button:hover {
+            background-color: #f44336;
+        }
+
+        /* Style for individual messages */
+        .message {
+            background-color: #f0f0f0; /* Light gray background color */
+            border-radius: 10px; /* Rounded corners */
+            padding: 15px; /* Increased padding */
+            margin-bottom: 20px; /* More spacing between messages */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s; /* Add a transform transition */
+        }
+
+        /* Hover effect for messages */
+        .message:hover {
+            transform: scale(1.02); /* Slight scale-up on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Style for delete and like buttons */
+        .message button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: #ff5722;
+            margin-left: 10px; /* Increased margin between buttons */
+            font-size: 14px; /* Adjusted button font size */
+            transition: color 0.3s; /* Add color transition */
+        }
+
+        /* Hover effect for buttons */
+        .message button:hover {
+            color: #f44336; /* Button color on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://i.ibb.co/bLnPpXw/Presentation1.jpg" alt="Image" />
+        <h1>Celebrate Saudi National Day - Share Your Message</h1>
+    
+        <!-- Text area for users to enter their messages -->
+        <textarea id="message-input" placeholder="Write your message here..." rows="4" cols="50"></textarea>
+        <br>
+    
+        <!-- Button to submit the message -->
+        <button id="submit-button" onclick="submitMessage()">Submit Message</button>
+    
+        <hr>
+    
+        <!-- Display area for messages -->
+        <div id="message-display"></div>
+        
+        <!-- Puzzle link and comment -->
+        <p style="font-size: 14px; color: #555;">Enjoy this fun <a href="https://im-a-puzzle.com/share/9089f810ba8fcc2" target="_blank">puzzle</a> while celebrating Saudi National Day!</p>
+
+        <!-- SoundCloud link -->
+        <p style="font-size: 14px; color: #555;">Listen to a special Saudi National Day track on <a href="https://soundcloud.com/saudinationalday/u4wdh3mmdccn?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" target="_blank">SoundCloud</a>.</p>
+    </div>
+    
+    <script>
+        // Function to load saved messages from local storage
+        function loadMessages() {
+            const savedMessages = localStorage.getItem('messages');
+            if (savedMessages) {
+                return JSON.parse(savedMessages);
+            }
+            return [];
+        }
+
+        // Function to save messages to local storage
+        function saveMessages() {
+            localStorage.setItem('messages', JSON.stringify(messages));
+        }
+
+        // Array to store submitted messages
+        const messages = loadMessages();
+
+        // Function to submit a message
+        function submitMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
+            
+            if (message === '') {
+                alert('Please enter a message.');
+                return;
+            }
+            
+            // Add the message to the array with initial likes set to 0
+            messages.push({ text: message, likes: 0 });
+            
+            // Save the messages
+            saveMessages();
+
+            // Clear the input
+            messageInput.value = '';
+            
+            // Display the messages
+            displayMessages();
+        }
+
+        // Function to delete a message
+        function deleteMessage(index) {
+            if (confirm('Are you sure you want to delete this message?')) {
+                messages.splice(index, 1);
+                saveMessages();
+                displayMessages();
+            }
+        }
+        
+        // Function to like a message
+        function likeMessage(index) {
+            messages[index].likes++;
+            saveMessages();
+            displayMessages();
+        }
+        
+        // Function to display messages
+        function displayMessages() {
+            const messageDisplay = document.getElementById('message-display');
+            messageDisplay.innerHTML = '';
+            
+            if (messages.length === 0) {
+                messageDisplay.innerHTML = 'No messages yet. Be the first to share!';
+                return;
+            }
+            
+            // Loop through messages and add them to the display
+            for (let i = 0; i < messages.length; i++) {
+                // Create a message container for each message
+                const messageContainer = document.createElement('div');
+                messageContainer.className = 'message';
+
+                // Message text
+                const messageText = document.createElement('p');
+                messageText.textContent = messages[i].text;
+
+                // Delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteMessage(i);
+
+                // Like button
+                const likeButton = document.createElement('button');
+                likeButton.textContent = `Like (${messages[i].likes})`;
+                likeButton.onclick = () => likeMessage(i);
+
+                // Append elements to the message container
+                messageContainer.appendChild(messageText);
+                messageContainer.appendChild(deleteButton);
+                messageContainer.appendChild(likeButton);
+
+                // Append the message container to the display
+                messageDisplay.appendChild(messageContainer);
+            }
+        }
+
+        // Initial display of messages
+        displayMessages();
+    </script>
+</body>
+</html>
